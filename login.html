@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Open+Sans&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ramabhadra&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <div class="topnav">
+          <a href="index.html" class="active" style="font-size: 13px">Tønder <br> Festival</a>
+            <!-- Navigation links (hidden by default) -->
+            <div id="myLinks">
+              <a href="report.html">Indrapportering</a>
+              <a href="tf.html">Sager</a>
+              <a href="#about">About</a>
+            </div>
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+            <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+              <i class="fa fa-bars"></i>
+            </a>
+          </div>
+          <div id="formContainer">
+              <h1>
+                  Login
+              </h1>
+          <p id="infoPassword">*hvis du ikke har et login, eller ikke kan huske det,
+              skal du henvende dig til pladskonteret <br> eller ringe på 66666666
+          </p>
+        </div>
+
+            <form name='loginForm' action='receiveAndStore3.php' method='post'>
+                        <label for='navn'>Navn</label>
+                        <input id='navn' name='navn' type='text' required>
+
+                        <label for='funktion'>Mobil</label>
+                        <input id='funktion' name='funktion' type='text' required>
+
+                        <input id='foxy' name='foxy' type='hidden' value='' readonly/>
+  
+                        <button id='butt'>Insend</button>
+            </form>
+
+    </main>
+    <div class="displayNoneDiv">
+      <h1 class="wrongFormath1">
+          sidens indhold kan kun vises på mobil!
+      </h1>
+      <p class="wrongFormatP ">
+          du kan se sidens indhold ved at gå til console og vælge mobil.
+      </p>
+    </div>
+
+          <script>
+            const manipulateForm = function (e) {
+                e.preventDefault();
+                // Laver ajax request
+                let oReq = new XMLHttpRequest();
+                oReq.addEventListener("load", function () {
+                    let eksd = [];
+                   if (this.responseText.length > 0)
+                        eksd = JSON.parse(this.responseText); // get and objectify
+                    // Tilføjer values fra form
+                    let y = $('navn').value;
+                    let x = $('funktion').value;
+                    let u = {
+                        navn: y,
+                        funktion: x,
+                    }; 
+                    // pusher og gør det muligt for json at læse v. stringify
+                    eksd.push(u);                             // add new
+                    $('foxy').value = JSON.stringify(eksd);     // stringify - 
+                    document.forms['loginForm'].submit();          // sender
+
+                });
+                // Får php'en som refererer til incidents.json og sender
+                oReq.open("GET", "http://localhost/login.php");
+                oReq.send();
+            };
+
+
+              const doThis = function () {
+                $('butt').addEventListener('click', manipulateForm)
+            };
+
+                function toggleNav() {
+                    var x = document.getElementById("myLinks");
+                    if (x.style.display === "block") {
+                    x.style.display = "none";
+                    } else {
+                    x.style.display = "block";
+                        }
+                }
+          </script>
+</body>
+</html>
